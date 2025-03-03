@@ -1,7 +1,7 @@
 # TopoUnet
 
 ## 💡 News:
-**(02/27/2025)** Submitted to **MICCAI**, hoping for acceptance.
+**(02/27/2025)** Submitted to **MICCAI 2025**, hoping for acceptance.
 
 ## Description
 This repository accompanies the paper "Leveraging Persistence Images to Enhance Robustness and Performance in Curvilinear Structure Segmentation."
@@ -26,6 +26,7 @@ You can download these datasets using the following links:
 - **Private Data**: *Coming soon*
 
 ##  📊 Generate Persistence Images
+
 
 
 
