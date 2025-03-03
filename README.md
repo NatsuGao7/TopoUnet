@@ -9,4 +9,25 @@ We introduce PIs-Regressor, a module that enables deep networks to learn persist
 
 ##  🔧Install environment
 * Create environment with conda:
+```bash
+conda create -n topoUnet python=3.10.0
+conda activate topoUnet
+```
+* Install dependencies
+```bash
+pip install -r requirements.txt
+```
+
+##  📊 Dataset
+We use **DRIVE, ER, and a private dataset** as our datasets.
+You can download these datasets using the following links:  
+- **DRIVE**: [Download](https://drive.grand-challenge.org/Download/)  
+- **ER**: [Download](https://ieee-dataport.org/documents/fluorescence-microscopy-image-datasets-deep-learning-segmentation-intracellular-orgenelle)  
+- **Private Data**: *Coming soon*
+
+##  📊 Generate Persistence Images
+
+
+
+
 
