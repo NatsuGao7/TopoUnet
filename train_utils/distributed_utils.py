@@ -78,81 +78,79 @@ class SmoothedValue(object):
 class AUCCalculator(object):
     def __init__(self, num_classes, ignore_index=None):
         """
-        num_classes: 分类的类别数量
-        ignore_index: 需要忽略的标签值，默认为 None
+        num_classes: Number of classes for classification.
+        ignore_index: Label value to ignore, default is None.
         """
         self.num_classes = num_classes
-        self.ignore_index = ignore_index  # 新增 ignore_index 参数
+        self.ignore_index = ignore_index  # New ignore_index parameter
         self.all_labels = []
         self.all_preds = []
 
     def update(self, a, b):
         """
-        更新标签和预测值
+        Update the labels and predictions.
 
         a: Ground truth tensor (1D)
         b: Predictions (logits tensor, typically of shape [batch_size, num_classes])
         """
         with torch.no_grad():
-            # 提取正类的预测概率（适用于二分类）
-            pred_probs = F.softmax(b, dim=1)[:, 1, :, :]  # 提取正类概率
+            # Extract positive class probabilities (suitable for binary classification)
+            pred_probs = F.softmax(b, dim=1)[:, 1, :, :]  # Extract positive class probability
             pred_probs = pred_probs.flatten()
             labels = a.flatten()
 
-            # 如果存在 ignore_index，则过滤掉对应像素
+            # If ignore_index is provided, filter out the corresponding pixels
             if self.ignore_index is not None:
-                valid_mask = labels != self.ignore_index  # 有效像素掩码
+                valid_mask = labels != self.ignore_index  # Valid pixel mask
                 labels = labels[valid_mask]
                 pred_probs = pred_probs[valid_mask]
             
-
-
-            self.all_labels.append(labels.cpu().numpy())  # 收集有效标签
-            self.all_preds.append(pred_probs.cpu().numpy())  # 收集有效预测的概率
+            self.all_labels.append(labels.cpu().numpy())  # Collect valid labels
+            self.all_preds.append(pred_probs.cpu().numpy())  # Collect valid prediction probabilities
 
     def reset(self):
-        """重置所有收集的标签和预测值"""
+        """Reset all collected labels and prediction values."""
         self.all_labels = []
         self.all_preds = []
 
     def compute(self):
         """
-        计算 AUC-ROC
+        Compute the AUC-ROC score.
         """
-        # 将所有标签和预测的概率堆叠成一维
+        # Concatenate all labels and prediction probabilities into one array
         all_labels = np.concatenate(self.all_labels, axis=0)
         all_preds = np.concatenate(self.all_preds, axis=0)
 
-        # 使用 sklearn 计算 AUC-ROC
+        # Compute AUC-ROC using sklearn
         auc = roc_auc_score(all_labels, all_preds)
         return auc
 
     def reduce_from_all_processes(self):
         """
-        同步分布式训练中的结果
-        将所有进程的 `all_labels` 和 `all_preds` 数据进行合并。
+        Synchronize results across distributed processes.
+        Merge the 'all_labels' and 'all_preds' data from all processes.
         """
         if not torch.distributed.is_available():
             return
         if not torch.distributed.is_initialized():
             return
 
-        # 转换为 Tensor
+        # Convert to tensor
         all_labels_tensor = torch.tensor(np.concatenate(self.all_labels, axis=0), dtype=torch.float32, device='cuda')
         all_preds_tensor = torch.tensor(np.concatenate(self.all_preds, axis=0), dtype=torch.float32, device='cuda')
 
-        # 分布式 all_reduce 同步数据
+        # Use distributed all_reduce to synchronize data
         torch.distributed.all_reduce(all_labels_tensor)
         torch.distributed.all_reduce(all_preds_tensor)
 
-        # 更新数据
+        # Update data
         self.all_labels = [all_labels_tensor.cpu().numpy()]
         self.all_preds = [all_preds_tensor.cpu().numpy()]
 
     def __str__(self):
-        """返回 AUC-ROC 的字符串表示"""
+        """Return a string representation of the AUC-ROC score."""
         auc = self.compute()
-        return auc
+        return str(auc)
 
 
 class ConfusionMatrix(object):
@@ -163,12 +161,12 @@ class ConfusionMatrix(object):
     def update(self, a, b):
         n = self.num_classes
         if self.mat is None:
-            # 创建混淆矩阵
+            # Create confusion matrix
             self.mat = torch.zeros((n, n), dtype=torch.int64, device=a.device)
         with torch.no_grad():
-            # 寻找GT中为目标的像素索引
+            # Identify valid pixel indices in ground truth
             k = (a >= 0) & (a < n)
-            # 统计像素真实类别a[k]被预测成类别b[k]的个数
+            # Count number of pixels where true label a[k] is predicted as label b[k]
             inds = n * a[k].to(torch.int64) + b[k]
             self.mat += torch.bincount(inds, minlength=n**2).reshape(n, n)
 
@@ -178,9 +176,9 @@ class ConfusionMatrix(object):
 
     def compute(self):
         h = self.mat.float()
-        # 计算全局预测准确率
+        # Compute global accuracy
         acc_global = torch.diag(h).sum() / h.sum()
-        # 计算IoU
+        # Compute Intersection over Union (IoU)
         iu = torch.diag(h) / (h.sum(1) + h.sum(0) - torch.diag(h))
         return acc_global, iu.mean()
 
@@ -203,7 +201,6 @@ class ConfusionMatrix(object):
         )
 
 
-
 class DiceCoefficient(object):
     def __init__(self, num_classes: int = 2, ignore_index: int = -100):
         self.cumulative_dice = None
@@ -216,7 +213,7 @@ class DiceCoefficient(object):
             self.cumulative_dice = torch.zeros(1, dtype=pred.dtype, device=pred.device)
         if self.count is None:
             self.count = torch.zeros(1, dtype=pred.dtype, device=pred.device)
-        # compute the Dice score, ignoring background
+        # Compute the Dice score, ignoring background
         pred = F.one_hot(pred.argmax(dim=1), self.num_classes).permute(0, 3, 1, 2).float()
         dice_target = build_target(target, self.num_classes, self.ignore_index)
         self.cumulative_dice += multiclass_dice_coeff(pred[:, 1:], dice_target[:, 1:], ignore_index=self.ignore_index)
@@ -345,7 +342,7 @@ def mkdir(path):
 
 def setup_for_distributed(is_master):
     """
-    This function disables printing when not in master process
+    This function disables printing when not in the master process.
     """
     import builtins as __builtin__
     builtin_print = __builtin__.print
@@ -383,31 +380,4 @@ def is_main_process():
 
 
 def save_on_master(*args, **kwargs):
-    if is_main_process():
-        torch.save(*args, **kwargs)
-
-
-def init_distributed_mode(args):
-    if 'RANK' in os.environ and 'WORLD_SIZE' in os.environ:
-        args.rank = int(os.environ["RANK"])
-        args.world_size = int(os.environ['WORLD_SIZE'])
-        args.gpu = int(os.environ['LOCAL_RANK'])
-    elif 'SLURM_PROCID' in os.environ:
-        args.rank = int(os.environ['SLURM_PROCID'])
-        args.gpu = args.rank % torch.cuda.device_count()
-    elif hasattr(args, "rank"):
-        pass
-    else:
-        print('Not using distributed mode')
-        args.distributed = False
-        return
-
-    args.distributed = True
-
-    torch.cuda.set_device(args.gpu)
-    args.dist_backend = 'nccl'
-    print('| distributed init (rank {}): {}'.format(
-        args.rank, args.dist_url), flush=True)
-    torch.distributed.init_process_group(backend=args.dist_backend, init_method=args.dist_url,
-                                         world_size=args.world_size, rank=args.rank)
-    setup_for_distributed(args.rank == 0)
+    if is_main_proce
