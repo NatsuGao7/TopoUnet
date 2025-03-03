@@ -4,6 +4,14 @@
 **(02/27/2025)** Submitted to **MICCAI 2025**, hoping for acceptance.
 
 ## Description
+
+![Segmentation Result](fig2.png)
+
+*From top to bottom, left to right, the figure presents: (1) the overall diagram
+of the model, and (2)Topology SegNet architecture (3) the PIs-Regressor network for
+extracting persistence image, and (4) the details of Topology SegNet during downsam-
+pling and upsampling.*
+
 This repository accompanies the paper "Leveraging Persistence Images to Enhance Robustness and Performance in Curvilinear Structure Segmentation."
 We introduce PIs-Regressor, a module that enables deep networks to learn persistence images (PIs) directly from data, enhancing segmentation robustness. Our Topology SegNet integrates topological features into both downsampling and upsampling stages, improving segmentation accuracy. Unlike handcrafted loss-based methods, our approach embeds topology directly into the network, achieving state-of-the-art performance.
 
