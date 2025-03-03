@@ -1,4 +1,4 @@
-# TopoUnet
+# Leveraging Persistence Images to Enhance Robustness and Performance in Curvilinear Structure Segmentation
 
 ## 💡 News:
 **(02/27/2025)** Submitted to **MICCAI 2025**, hoping for acceptance.
