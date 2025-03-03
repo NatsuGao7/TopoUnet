@@ -60,7 +60,7 @@ You can use `predict.py` to visualize the segmentation results.
 | | Ours + clDice  | 81.96 | 82.08 | 82.17 | 111.25 | 23.7 |
 | | cbDice  | 81.76 | **82.57** | 81.95 | 108.55 | 23.3 |
 | | Ours + cbDice  | 82.00 | 81.82 | 82.26 | 116.45 | **20.95** |
-| | Ours + EC + Dice Loss | **82.12** | 82.56 | **82.30** | **101.25** | 24.95 |
+| | Ours + EC + Dice Loss | <span style="color:red">82.12</span> | 82.56 | **82.30** | **101.25** | 24.95 |
 
 | Dataset | Method | Dice ↑ | ClDice ↑ | MIoU ↑ | β0 ↓ | β1 ↓ |
 |---------|--------|--------|---------|--------|--------|--------|
