@@ -36,6 +36,8 @@ Use the following command in the terminal to run the training script:
 python train.py
 ```
 ##  🌱 Testing and Visualizing Our Model
+You can use `predict_eva.ipynb` to run our trained model on the test set.
+You can use `predict.py` to visualize the segmentation results.
 
 
 
