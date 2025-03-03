@@ -5,7 +5,7 @@
 
 ## Description
 
-![Segmentation Result](fig2.png)
+![Diagram](fig2.png)
 
 *From top to bottom, left to right, the figure presents: (1) the overall diagram
 of the model, and (2)Topology SegNet architecture (3) the PIs-Regressor network for
@@ -90,6 +90,11 @@ You can use `predict.py` to visualize the segmentation results.
 | | cbDice  | 75.15 | 81.08 | 86.80 | 8.503 | 6.010 |
 | | Ours + cbDice  | 76.43 | 81.67 | 87.14 | 4.410 | 7.289 |
 | | Ours + EC + Dice Loss | **🪐76.99** | 82.77 | **🪐87.72** | **🪐4.278** | **🪐0.464** |
+
+![Segmentation Result](fig4.png)
+
+*Visualization of segmentation results from different models on the DRIVE, ER,
+and Private datasets.*
 
 
 You can download the model weights, view the segmentation visualization results, and check our training logs from the following link:
