@@ -8,4 +8,5 @@ This repository accompanies the paper "Leveraging Persistence Images to Enhance 
 We introduce PIs-Regressor, a module that enables deep networks to learn persistence images (PIs) directly from data, enhancing segmentation robustness. Our Topology SegNet integrates topological features into both downsampling and upsampling stages, improving segmentation accuracy. Unlike handcrafted loss-based methods, our approach embeds topology directly into the network, achieving state-of-the-art performance.
 
 ##  🔧Install environment
+* Create environment with conda:
 
