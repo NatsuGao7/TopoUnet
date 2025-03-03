@@ -28,6 +28,8 @@ You can download these datasets using the following links:
 ##  📊 Generate Persistence Images
 You can generate persistence image from segmentation images by following the `generate_pi.ipynb` tutorial. The generated persistence image serve as the ground truth for the PI-Regressor module, training the model to produce persistence image directly from the original images. For more details, please refer to our `pi_module.ipynb` tutorial.
 
+##  🌱 Training with out model
+
 
 
 
