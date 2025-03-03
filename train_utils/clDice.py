@@ -3,53 +3,53 @@ import numpy as np
 import torch
 
 def cl_score(v, s):
-    """[this function computes the skeleton volume overlap]
+    """Computes the skeleton volume overlap.
 
     Args:
-        v ([bool]): [image]
-        s ([bool]): [skeleton]
+        v (bool): Image.
+        s (bool): Skeleton.
 
     Returns:
-        [float]: [computed skeleton volume intersection]
+        float: Computed skeleton volume intersection.
     """
-    return np.sum(v*s)/np.sum(s)
+    return np.sum(v * s) / np.sum(s)
 
 
 def clDice(prediction, label, ignore_index=None):
     """
-    计算 clDice 指标，支持忽略指定标签。
+    Compute the clDice metric, supporting the exclusion of a specified label.
 
     Args:
-        v_p (np.ndarray or torch.Tensor): 预测图（2D 或 3D）。
-        v_l (np.ndarray or torch.Tensor): 真实标签图（2D 或 3D）。
-        ignore_index (int, optional): 要忽略的标签值，默认为 None。
+        prediction (np.ndarray or torch.Tensor): Predicted image (2D or 3D).
+        label (np.ndarray or torch.Tensor): Ground truth label image (2D or 3D).
+        ignore_index (int, optional): Label value to ignore. Defaults to None.
 
     Returns:
-        float: clDice 指标值。
+        float: clDice metric value.
     """
-    # 如果有 ignore_index，则过滤对应的像素或体素
+    # If ignore_index is provided, filter out the corresponding pixels/voxels
     pred = torch.argmax(prediction, dim=1)  # Shape: (1, 584, 565)
     v_p = (pred == 1).squeeze(0).cpu().numpy()
     v_l = (label == 1).squeeze(0).cpu().numpy()
     
     if ignore_index is not None:
-        mask = label != ignore_index  # 仅保留非忽略区域
+        mask = label != ignore_index  # Retain only non-ignored regions
         mask = mask.cpu().numpy()
-        v_p = v_p * mask  # 将预测图中的忽略区域置为 0
-        v_l = v_l * mask  # 将标签图中的忽略区域置为 0
+        v_p = v_p * mask  # Set ignored regions in prediction to 0
+        v_l = v_l * mask  # Set ignored regions in label to 0
     
-    # 2D 图像处理
+    # Process 2D images
     if len(v_p.shape) == 2:
         tprec = cl_score(v_p, skeletonize(v_l))
         tsens = cl_score(v_l, skeletonize(v_p))
-    # 3D 图像处理
+    # Process 3D images
     elif len(v_p.shape) == 3:
         tprec = cl_score(v_p, skeletonize(v_l))
         tsens = cl_score(v_l, skeletonize(v_p))
     else:
         raise ValueError("Input images must be either 2D or 3D.")
 
-    # 计算 clDice 指标
-    if tprec + tsens == 0:  # 防止除以零的情况
+    # Compute the clDice metric
+    if tprec + tsens == 0:  # Prevent division by zero
         return 0.0
     return 2 * tprec * tsens / (tprec + tsens)
