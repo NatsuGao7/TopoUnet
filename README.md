@@ -39,6 +39,8 @@ python train.py
 You can use `predict_eva.ipynb` to run our trained model on the test set.
 You can use `predict.py` to visualize the segmentation results.
 
+##  🔥 Result
+
 
 
 
