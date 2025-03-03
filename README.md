@@ -41,9 +41,6 @@ You can use `predict.py` to visualize the segmentation results.
 
 ##  🔥 Result
 
-## Performance Comparison
-
-### Metrics:
 - **Dice ↑**: Higher is better
 - **ClDice ↑**: Higher is better
 - **MIoU ↑**: Higher is better
@@ -87,7 +84,12 @@ You can use `predict.py` to visualize the segmentation results.
 | | Ours + EC + Dice Loss | **🪐76.99** | 82.77 | **🪐87.72** | **🪐4.278** | **🪐0.464** |
 
 
+You can download the model weights, view the segmentation visualization results, and check our training logs from the following link:
 
+[Download Here](https://drive.google.com/drive/folders/1Zi3ML0Xnldjyt4qW1I_eQOr5_H5lESth?usp=drive_link)
+
+### 🧑‍🔬 Contact Information:
+If you have any questions, feel free to contact us. My email is [zhuangzhi.gao@liverpool.ac.uk](mailto:zhuangzhi.gao@liverpool.ac.uk).
 
 
 
