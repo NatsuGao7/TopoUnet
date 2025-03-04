@@ -37,6 +37,23 @@ You can download these datasets using the following links:
 ##  📊 Generate Persistence Images
 You can generate persistence image from segmentation images by following the `generate_pi.ipynb` tutorial. The generated persistence image serve as the ground truth for the PI-Regressor module, training the model to produce persistence image directly from the original images. For more details, please refer to our `pi_module.ipynb` tutorial.
 
+##  📊 Originzing data
+The persistence image (GT) generated in the previous step will be stored in the `PI` folder for later training.
+The overall data organization is shown in the figure below.
+```python
+├── DRIVE
+    ├──training
+        ├──images
+        ├──mask
+        ├──1st_manual
+        ├── PI
+    ├──test
+        ├──images
+        ├──mask
+        ├──1st_manual
+        ├── PI
+```
+
 ##  🌱 Training with out model
 Before starting the training process, use `compute_mean_std.py` to calculate the mean and standard deviation of the dataset. These values are then used for normalization during data augmentation.
 Use the following command in the terminal to run the training script:
