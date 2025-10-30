@@ -119,8 +119,6 @@ You can download the model weights, view the segmentation visualization results,
 
 [Download Here](https://drive.google.com/drive/folders/1Zi3ML0Xnldjyt4qW1I_eQOr5_H5lESth?usp=drive_link)
 
-### 🧑‍🔬 Contact Information:
-If you have any questions, feel free to contact us. My email is [zhuangzhi.gao@liverpool.ac.uk](mailto:zhuangzhi.gao@liverpool.ac.uk).
 
 
 
