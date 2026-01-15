@@ -2,7 +2,7 @@
 
 
 ## 💡 News:
-**(02/27/2025)** Submitted to **MICCAI 2025**, hoping for acceptance.
+** Our paper paper was accepted by  IEEE International Symposium on Biomedical Imaging （ISBI), see you in London.
 
 ## Description
 
