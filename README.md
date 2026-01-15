@@ -2,7 +2,7 @@
 
 
 ## 💡 News:
-** Our paper paper was accepted by  IEEE International Symposium on Biomedical Imaging （ISBI), see you in London.
+Our paper paper was accepted by  IEEE International Symposium on Biomedical Imaging （ISBI), see you in London.
 
 ## Description
 
